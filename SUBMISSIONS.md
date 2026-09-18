@@ -24,19 +24,19 @@ this file, `README.md`, `LICENSE`, `assets/`.
 
 ## Live check — the server
 
-Ran locally against the built server on 2026-09-18, before deploy. **Re-run
-against production after the deploy and replace this table with what it says.**
+Run against production (`https://postdashpro.com`) on 2026-09-18, on the
+deployed commit `e7ec56f`. Re-run and replace this table after any deploy.
 
 | Check | Result |
 |---|---|
-| `POST /api/mcp` with no credentials | **401**, JSON-RPC error -32001 |
-| `WWW-Authenticate` on that 401 | **present** — `Bearer realm="postdashpro-mcp", resource_metadata="…/.well-known/oauth-protected-resource"` |
-| `GET /.well-known/oauth-protected-resource` | **200** (also on the `/api/mcp` and `/mcp` scoped aliases) |
-| `GET /.well-known/oauth-authorization-server` | **200** (also `openid-configuration`, and the scoped aliases, with the issuer derived from the path) |
-| `POST /oauth/register` | **201** with a `client_id` |
-| `GET /oauth/authorize` with no parameters | **400**, not 404 |
+| `POST /api/mcp` with no credentials | **401**, JSON-RPC error -32001 — `"Unauthorized: sign in through your AI client, or provide a valid API key"` |
+| `WWW-Authenticate` on that 401 | **present** — `Bearer realm="postdashpro-mcp", resource_metadata="https://postdashpro.com/.well-known/oauth-protected-resource"` |
+| `GET /.well-known/oauth-protected-resource` | **200** — resource `https://postdashpro.com/api/mcp`, scope `postdash.autopilot`. The scoped aliases (`/api/mcp/.well-known/…`, `/mcp/.well-known/…`, `/.well-known/…/api/mcp`) are 200 too. |
+| `GET /.well-known/oauth-authorization-server` | **200** — issuer `https://postdashpro.com`, `code_challenge_methods_supported: ["S256"]`, grants `authorization_code` + `refresh_token`. `openid-configuration` and the scoped aliases are 200 too. |
+| `POST /oauth/register` | **201** with a `client_id` (`pdp_mcp_cl_…`), `token_endpoint_auth_method: none` |
+| `GET /oauth/authorize` with no parameters | **400** `unsupported_response_type`, not 404 |
 | Transport | Streamable HTTP, stateless, JSON responses (no SSE) |
-| Tools | 11 |
+| Tools | 11 (as generated into this repository; `tools/list` needs credentials, so it is not re-checked by the unauthenticated probe above) |
 
 Re-run before any submission:
 
