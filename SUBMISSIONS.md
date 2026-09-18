@@ -24,19 +24,36 @@ this file, `README.md`, `LICENSE`, `assets/`.
 
 ## Live check — the server
 
-Run against production (`https://postdashpro.com`) on 2026-09-18, on the
-deployed commit `e7ec56f`. Re-run and replace this table after any deploy.
+Re-ran against production on 2026-09-18 after deploy `b73de24`
+(`zy38e8d-231053206511`, Coolify `dwhbh0kea9bftt1e3md85bsd` finished).
 
 | Check | Result |
 |---|---|
 | `POST /api/mcp` with no credentials | **401**, JSON-RPC error -32001 — `"Unauthorized: sign in through your AI client, or provide a valid API key"` |
 | `WWW-Authenticate` on that 401 | **present** — `Bearer realm="postdashpro-mcp", resource_metadata="https://postdashpro.com/.well-known/oauth-protected-resource"` |
-| `GET /.well-known/oauth-protected-resource` | **200** — resource `https://postdashpro.com/api/mcp`, scope `postdash.autopilot`. The scoped aliases (`/api/mcp/.well-known/…`, `/mcp/.well-known/…`, `/.well-known/…/api/mcp`) are 200 too. |
-| `GET /.well-known/oauth-authorization-server` | **200** — issuer `https://postdashpro.com`, `code_challenge_methods_supported: ["S256"]`, grants `authorization_code` + `refresh_token`. `openid-configuration` and the scoped aliases are 200 too. |
-| `POST /oauth/register` | **201** with a `client_id` (`pdp_mcp_cl_…`), `token_endpoint_auth_method: none` |
+| `POST /api/mcp` with an unknown Bearer | **401** and the same challenge |
+| `GET /.well-known/oauth-protected-resource` | **200** — resource `https://postdashpro.com/api/mcp`, scope `postdash.autopilot` |
+| `GET /.well-known/oauth-authorization-server` | **200** — issuer `https://postdashpro.com`, grants `authorization_code` + `refresh_token` |
+| `POST /oauth/register` | **201** with a `client_id`, `token_endpoint_auth_method: none` |
 | `GET /oauth/authorize` with no parameters | **400** `unsupported_response_type`, not 404 |
 | Transport | Streamable HTTP, stateless, JSON responses (no SSE) |
-| Tools | 11 (as generated into this repository; `tools/list` needs credentials, so it is not re-checked by the unauthenticated probe above) |
+| Tools | 11 (as generated into this repository) |
+| `POST /api/mcp` tools/list with a valid API key | **not verified live** — plaintext keys are not stored |
+| Browser consent → token → initialize | **not verified live** — needs the claude.ai popup |
+
+### Fix note — Claude's issued token was 402ed (2026-09-18)
+
+Consent completed and `/oauth/token` returned 200. Claude's three initialize
+calls (`ofid_9324adc74ff8679d`, `ofid_6a42fe48bf2a19d0`, `ofid_479e97a7c1146b3a`)
+were then refused. That was **402**, not 401: `mcp_oauth_tokens.last_used_at`
+and the matching `api_keys.last_used_at` were stamped, so `resolve.ts` accepted
+the bearer. The account (`numan@roasbeast.com`) had signed up in the OAuth
+popup and never started a trial (`users.trial_ends_at` null).
+
+Fix in the product repo (`6f99156`, on `main` as `b73de24`): approving the
+connection — and the first authenticated MCP request — starts the card-free
+trial with the same gates as the dashboard button. `oauth_09` walks DCR → PKCE
+S256 → consent → token → initialize through `DbMcpOauthStore` on real Postgres.
 
 Re-run before any submission:
 
