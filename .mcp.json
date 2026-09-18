@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "postdashpro": {
+      "type": "http",
+      "url": "https://postdashpro.com/api/mcp",
+      "headers": {
+        "Authorization": "Bearer ${POSTDASHPRO_API_KEY}"
+      }
+    }
+  }
+}

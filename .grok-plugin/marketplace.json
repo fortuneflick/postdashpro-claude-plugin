@@ -1,0 +1,32 @@
+{
+  "name": "postdashpro",
+  "owner": {
+    "name": "PostDashPro",
+    "email": "hello@postdashpro.com",
+    "url": "https://postdashpro.com"
+  },
+  "metadata": {
+    "description": "Schedule social posts to 12 networks from an agent: attach or generate the image, queue each post in the user's own timezone, and leave every one for a person to review before it publishes.",
+    "version": "1.1.0"
+  },
+  "plugins": [
+    {
+      "name": "postdashpro",
+      "source": "./",
+      "description": "Schedule social posts to 12 networks from an agent: attach or generate the image, queue each post in the user's own timezone, and leave every one for a person to review before it publishes.",
+      "category": "productivity",
+      "homepage": "https://postdashpro.com/guide",
+      "keywords": [
+        "postdashpro",
+        "postdashpro mcp",
+        "postdashpro social scheduler",
+        "postdashpro ai agent",
+        "postdashpro autopilot",
+        "postdashpro post scheduling"
+      ],
+      "domains": [
+        "postdashpro.com"
+      ]
+    }
+  ]
+}

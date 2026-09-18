@@ -1,0 +1,24 @@
+{
+  "name": "postdashpro",
+  "version": "1.1.0",
+  "description": "Schedule social posts to 12 networks from an agent: attach or generate the image, queue each post in the user's own timezone, and leave every one for a person to review before it publishes.",
+  "author": {
+    "name": "PostDashPro",
+    "email": "hello@postdashpro.com",
+    "url": "https://postdashpro.com"
+  },
+  "homepage": "https://postdashpro.com/guide",
+  "repository": "https://github.com/fortuneflick/postdashpro-claude-plugin",
+  "license": "MIT",
+  "keywords": [
+    "postdashpro",
+    "postdashpro mcp",
+    "postdashpro social scheduler",
+    "postdashpro ai agent",
+    "postdashpro autopilot",
+    "postdashpro post scheduling"
+  ],
+  "skills": [
+    "./skills/postdashpro"
+  ]
+}
