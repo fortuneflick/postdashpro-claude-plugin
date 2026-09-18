@@ -77,16 +77,16 @@ domain-verification challenge route, which is a separate code change.
 
 ## The plan gate — say this in every review note
 
-Which agent drives the server is a pricing tier, checked on `initialize` from
-`clientInfo.name`:
+Every plan may drive the server from any MCP client. What a plan limits is how
+many agents can be connected at once — one connection per API key, and an OAuth
+sign-in mints one the same way.
 
-- Creator and Growth plans: Claude and ChatGPT.
-- Agency plan: Claude Code, Cursor, Codex, Grok and every other MCP client.
-
-So a reviewer on a Creator plan testing from Claude Code gets a 402 with
-`agent_client_not_on_plan`, which reads as a broken server if they were not
-told. **Give every reviewer an Agency-plan test account**, and say in the notes
-that the refusal is a plan message, not a fault.
+A reviewer who hits the ceiling gets a 402 naming the limit, both at the OAuth
+consent step and on a tool call. That reads as a broken server if they were not
+told. **Give every reviewer a test account on the top plan with no connections
+already in use**, and say in the notes that a 402 is a plan message, not a
+fault. A lapsed or past-due account is also refused with 402, so the demo
+account must be in good standing for the whole review window.
 
 ## 1. Push this repository
 
@@ -133,8 +133,8 @@ and re-pin.
 - Description: use the `description` in `.claude-plugin/plugin.json` verbatim.
 - Note for the reviewer: the plugin ships the skill and a `.mcp.json` that
   reads `POSTDASHPRO_API_KEY` from the environment. No credential is written to
-  a config file and none is in this repository. Claude Code is an Agency-plan
-  client (see the plan gate above) — the test account must be on Agency.
+  a config file and none is in this repository. See the plan gate above — the test
+  account needs spare connection headroom.
 - Pushes to this repository are picked up automatically. **Never open a second
   submission.**
 
@@ -149,7 +149,7 @@ and re-pin.
   org name `PostDashPro`, handle `postdashpro`, contact `hello@postdashpro.com`,
   website `https://postdashpro.com`.
 - The Cursor plugin is skill-only; the one-click server install is the deeplink
-  in README.md. Cursor is an Agency-plan client.
+  in README.md, and Cursor can also sign in over OAuth with no key at all.
 
 ## 5. claude.ai connectors directory
 
@@ -170,7 +170,7 @@ Packet to have ready:
 | Support | `hello@postdashpro.com` |
 | Icon | `assets/icon-192.png` |
 | Example prompts | "What accounts do I have connected?" · "Draft three posts for this week and schedule them for 9am" · "Make an image for this post and attach it" · "What is queued for tomorrow?" · "Write this in my brand voice and put it in drafts" |
-| Test account | An Agency-plan workspace with several networks connected, a set timezone, a few items in the media library, and no MFA |
+| Test account | A top-plan workspace with spare connection headroom, several networks connected, a set timezone, a few items in the media library, and no MFA |
 
 ## 6. ChatGPT apps (last) — needs the domain-verification route
 
