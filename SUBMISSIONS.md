@@ -22,14 +22,19 @@ this file, `README.md`, `LICENSE`, `assets/`.
       Re-read it after each push with
       `git ls-remote https://github.com/fortuneflick/postdashpro-claude-plugin.git HEAD`
 
-## Live check — the server (2026-09-18)
+## Live check — the server
+
+Ran locally against the built server on 2026-09-18, before deploy. **Re-run
+against production after the deploy and replace this table with what it says.**
 
 | Check | Result |
 |---|---|
-| `POST https://postdashpro.com/api/mcp` with no credentials | **401**, `{"jsonrpc":"2.0","error":{"code":-32001,"message":"Unauthorized: provide a valid API key"}}` |
-| `WWW-Authenticate` on that 401 | **absent** |
-| `GET /.well-known/oauth-protected-resource` | **404** |
-| `GET /.well-known/oauth-authorization-server` | **404** |
+| `POST /api/mcp` with no credentials | **401**, JSON-RPC error -32001 |
+| `WWW-Authenticate` on that 401 | **present** — `Bearer realm="postdashpro-mcp", resource_metadata="…/.well-known/oauth-protected-resource"` |
+| `GET /.well-known/oauth-protected-resource` | **200** (also on the `/api/mcp` and `/mcp` scoped aliases) |
+| `GET /.well-known/oauth-authorization-server` | **200** (also `openid-configuration`, and the scoped aliases, with the issuer derived from the path) |
+| `POST /oauth/register` | **201** with a `client_id` |
+| `GET /oauth/authorize` with no parameters | **400**, not 404 |
 | Transport | Streamable HTTP, stateless, JSON responses (no SSE) |
 | Tools | 11 |
 
@@ -39,34 +44,36 @@ Re-run before any submission:
 curl -si -X POST https://postdashpro.com/api/mcp \
   -H 'Content-Type: application/json' \
   -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}' | head -20
+curl -s https://postdashpro.com/.well-known/oauth-protected-resource
+curl -s https://postdashpro.com/.well-known/oauth-authorization-server
+curl -si -X POST https://postdashpro.com/oauth/register \
+  -H 'Content-Type: application/json' \
+  -d '{"client_name":"probe","redirect_uris":["https://claude.ai/api/mcp/auth_callback"]}' | head -1
 ```
 
-## The one blocker: no OAuth
+## OAuth — built
 
-Authentication today is a bearer API key, or the key as a path segment
-(`/api/mcp/k/<key>`) for connector interfaces that offer only "OAuth" or "no
-authentication".
+Authentication is OAuth 2.1 (authorization code + PKCE S256), with the bearer
+API key and the path-segment key kept working for clients that want them.
 
-**Both the claude.ai connectors directory and the ChatGPT apps review require
-working OAuth discovery.** A path-segment key is a workaround for a user adding
-the server by hand, not something either review accepts: the reviewer is
-checking that a new user can connect without pasting a secret into a URL.
-
-What the server would need, in order:
+What ships:
 
 1. `GET /.well-known/oauth-protected-resource` — 200, naming the resource
-   (`https://postdashpro.com/api/mcp`), the authorization server and the
-   scopes.
-2. A `WWW-Authenticate: Bearer resource_metadata="…"` header on the 401, so a
-   client discovers step 1 instead of giving up.
-3. An authorization server with dynamic client registration (RFC 7591),
-   PKCE, and the authorize/token endpoints under
-   `/.well-known/oauth-authorization-server`.
-4. Tokens that resolve to the same account a key does, so the existing
-   per-account scoping holds unchanged.
+   (`https://postdashpro.com/api/mcp`), the authorization server and the scope.
+   Served on the scoped aliases too, because different clients derive different
+   candidate URLs.
+2. `WWW-Authenticate: Bearer realm=…, resource_metadata=…` on every 401 from
+   the MCP endpoint, so a client discovers item 1 rather than giving up.
+3. `GET /.well-known/oauth-authorization-server` (and `openid-configuration`),
+   RFC 7591 dynamic client registration at `POST /oauth/register` returning
+   201, `GET|POST /oauth/authorize` with a consent page behind the normal
+   PostDashPro sign-in, `POST /oauth/token` for the code and refresh grants
+   with rotation, and `POST /oauth/revoke` (RFC 7009).
+4. Tokens resolve to an API key row, so they reach exactly the account and
+   surface a key reaches — and deleting that key from Settings kills them.
 
-Items 3 and 4 are the work; 1 and 2 are a few lines once 3 exists. **Steps 5
-and 6 below stay blocked until this ships.** Steps 2, 3 and 4 do not need it.
+**Steps 5 and 6 below are unblocked by this.** Step 6 still needs the ChatGPT
+domain-verification challenge route, which is a separate code change.
 
 ## The plan gate — say this in every review note
 
@@ -144,7 +151,7 @@ and re-pin.
 - The Cursor plugin is skill-only; the one-click server install is the deeplink
   in README.md. Cursor is an Agency-plan client.
 
-## 5. claude.ai connectors directory — BLOCKED on OAuth
+## 5. claude.ai connectors directory
 
 Packet to have ready:
 
@@ -156,7 +163,7 @@ Packet to have ready:
 | Description | The README's opening two paragraphs |
 | Categories | Productivity, Marketing |
 | MCP server URL | `https://postdashpro.com/api/mcp` |
-| Auth | **OAuth 2.1 — not built yet. See the blocker above.** |
+| Auth | OAuth 2.1 — authorization code + PKCE, dynamic client registration. Add by URL; the directory discovers the rest. |
 | Docs URL | `https://postdashpro.com/guide` |
 | Privacy URL | `https://postdashpro.com/privacy-policy` |
 | Terms URL | `https://postdashpro.com/terms-of-service` |
@@ -165,7 +172,7 @@ Packet to have ready:
 | Example prompts | "What accounts do I have connected?" · "Draft three posts for this week and schedule them for 9am" · "Make an image for this post and attach it" · "What is queued for tomorrow?" · "Write this in my brand voice and put it in drafts" |
 | Test account | An Agency-plan workspace with several networks connected, a set timezone, a few items in the media library, and no MFA |
 
-## 6. ChatGPT apps (last) — BLOCKED on OAuth
+## 6. ChatGPT apps (last) — needs the domain-verification route
 
 - Portal: https://platform.openai.com/ (OpenAI org login with Apps Management
   access and a verified publisher identity; there is no public status check).
@@ -174,9 +181,9 @@ Packet to have ready:
   a fully featured demo account **without MFA**; positive and negative test
   cases; privacy, terms and support URLs; tested in Developer Mode on desktop
   and mobile.
-- **Owner steps before submitting:** OAuth (above), and the challenge route,
-  which does not exist yet — a code change in the product repository, not a DNS
-  record.
+- **Owner steps before submitting:** the challenge route, which does not exist
+  yet — a code change in the product repository, not a DNS record. OAuth itself
+  is done.
 - Tool descriptions are kept under 1024 characters because the Chat Completions
   tool schema rejects longer ones and drops the whole server. Keep it that way.
 - Policy note for the review: PostDashPro schedules posts to accounts the user

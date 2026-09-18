@@ -2,8 +2,8 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "com.postdashpro/mcp-server",
   "title": "PostDashPro",
-  "description": "Schedule social posts to 12 networks from an agent. Hosted server; authenticate with a PostDashPro API key.",
-  "version": "1.1.0",
+  "description": "Schedule social posts to 12 networks from an agent. Hosted server; sign in with your PostDashPro account, or authenticate with an API key.",
+  "version": "1.2.0",
   "websiteUrl": "https://postdashpro.com/guide",
   "repository": {
     "url": "https://github.com/fortuneflick/postdashpro-claude-plugin",
@@ -16,8 +16,8 @@
       "headers": [
         {
           "name": "Authorization",
-          "description": "Bearer <your PostDashPro API key>, created under Settings, Integrations.",
-          "isRequired": true,
+          "description": "Optional. Clients that support OAuth sign in instead; otherwise send Bearer <your PostDashPro API key>, created under Settings, API & Webhooks.",
+          "isRequired": false,
           "isSecret": true,
           "format": "string"
         }

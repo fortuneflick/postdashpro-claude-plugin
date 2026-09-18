@@ -7,14 +7,14 @@
   },
   "metadata": {
     "description": "Schedule social posts to 12 networks from an agent: attach or generate the image, queue each post in the user's own timezone, and leave every one for a person to review before it publishes.",
-    "version": "1.1.0"
+    "version": "1.2.0"
   },
   "plugins": [
     {
       "name": "postdashpro",
       "source": "./",
       "description": "Schedule social posts to 12 networks from an agent: attach or generate the image, queue each post in the user's own timezone, and leave every one for a person to review before it publishes.",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "author": {
         "name": "PostDashPro",
         "email": "hello@postdashpro.com",

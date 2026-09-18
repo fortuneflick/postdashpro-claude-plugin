@@ -17,9 +17,23 @@ Pinterest, Bluesky, Telegram, Discord and Mastodon.
 
 ## Install
 
-Create an API key first: PostDashPro, then Settings, then Integrations. Every
-line below carries the same endpoint (`https://postdashpro.com/api/mcp`) and a
-placeholder key.
+There are two ways to authenticate, and the first one asks nothing of you.
+
+**Sign in.** The hosted server speaks OAuth 2.1, so a client that supports it —
+the Claude connectors directory, ChatGPT, Claude Code, Cursor, Codex — discovers
+that by itself, opens a PostDashPro sign-in page, shows you what the agent will
+be able to do, and takes over once you approve. Add the server by URL alone:
+
+```
+https://postdashpro.com/api/mcp
+```
+
+No key, no header, nothing to paste. The connection appears under Settings, API
+& Webhooks, and ending it there disconnects the agent immediately.
+
+**Or use an API key.** Create one under Settings, API & Webhooks. Every command
+below carries the same endpoint (`https://postdashpro.com/api/mcp`) and a
+placeholder key; leave the header out entirely if you would rather sign in.
 
 **Claude Code — the plugin brings the skill, and one command adds the server:**
 
@@ -105,8 +119,10 @@ written to the file.
 
 ### A client with no field for a bearer token
 
-Some connector interfaces offer only OAuth or no authentication, with nowhere
-to put a header. For those, the key goes in the path instead:
+Connector interfaces that offer only "OAuth" or "no authentication" should now
+pick **OAuth** and sign in — that is what the flow above is for. The older
+workaround still works for anything that supports neither, with the key as a
+path segment:
 
 ```
 https://postdashpro.com/api/mcp/k/YOUR_API_KEY
@@ -158,10 +174,14 @@ npx skills add fortuneflick/postdashpro-claude-plugin
   anything beyond copying those files into your agent.
 - **One runtime endpoint:** `https://postdashpro.com/api/mcp` over HTTPS. Every
   connect command above names that address; the tools run there.
-- **Credentials:** a bearer API key created under Settings, Integrations. This
-  repository contains no keys and never asks for one in chat. The Claude Code
-  manifest reads `POSTDASHPRO_API_KEY` from your environment rather than
-  writing it to a config file.
+- **Credentials:** either an OAuth sign-in or a bearer API key created under
+  Settings, API & Webhooks. This repository contains no keys and never asks for
+  one in chat. The Claude Code manifest reads `POSTDASHPRO_API_KEY` from your
+  environment rather than writing it to a config file.
+- **OAuth:** authorization code with PKCE. The consent screen lists what the
+  agent will be able to do before you approve it. Access tokens last a day and
+  refresh tokens rotate each time they are used, so a copied one stops working.
+  Nothing issued is stored in readable form.
 - **Scope:** a key reaches one account's posts, media and connections. It
   cannot read another account, and it is revocable from Settings.
 - **No telemetry.** Nothing here phones home.
