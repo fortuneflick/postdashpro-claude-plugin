@@ -18,7 +18,8 @@ this file, `README.md`, `LICENSE`, `assets/`.
 
 - [x] Public repository created: https://github.com/fortuneflick/postdashpro-claude-plugin (MIT).
 - [x] `claude plugin validate .` passes locally.
-- [ ] Record the 40-char SHA after each push:
+- [x] Pushed. SHA at the xAI submission: `f6132719051f1c3d5b0e46002b32a0b22a77d714`.
+      Re-read it after each push with
       `git ls-remote https://github.com/fortuneflick/postdashpro-claude-plugin.git HEAD`
 
 ## Live check — the server (2026-09-18)
@@ -105,6 +106,14 @@ Then commit and push here, and record the SHA.
    purpose; xAI rejects generic terms such as `social media`.
 5. After any change to this repository, open a follow-up PR bumping `sha`.
    **Never a parallel entry.**
+
+**Status 2026-09-18:** PR open — https://github.com/xai-org/plugin-marketplace/pull/787,
+from fork `fortuneflick/plugin-marketplace`, branch `add-postdashpro`, pinned to
+`f6132719051f1c3d5b0e46002b32a0b22a77d714`. Branched from upstream `main` at
+1581c90; the diff is the catalog entry and its generated index rows only. Expect
+the "official org vs personal account" question that the sibling submissions
+drew; the answer offered there is to move the repository to a `postdashpro` org
+and re-pin.
 
 ## 3. Anthropic plugin directory (Claude Code / Cowork)
 
