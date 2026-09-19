@@ -24,11 +24,11 @@ this file, `README.md`, `LICENSE`, `assets/`.
 
 ## Live check — the server
 
-Re-ran on 2026-09-19 after product deploy `ef83935` (Coolify
-`elo5aim6o410gf7bvla7erbi` finished, container `zy38e8d-010640571124`, image
-`zy38e8d:ef83935362594b229ee8f95885e9fcc1bd905e76`). A Settings-style API key
-minted on the review-account row `MCP: Claude (review)` (`numan@roasbeast.com`)
-got `initialize` 200 and `tools/list` 200 with 10 tools and no `generate_media`.
+Re-ran on 2026-09-19 after product deploy `0c66f41` (Coolify
+`frvv2otoherb9rnl5n79bi3a` finished, container `zy38e8d-064835322135`, image
+`zy38e8d:0c66f411b83498c1b7ac98cfa43364d8c1ba52e5`). Authenticated
+`initialize` 200 (`serverInfo.title` PostDashPro, version `1.3.0`, instructions
+present) and `tools/list` 200 with **24 tools** and no `generate_media`.
 Browser consent was not walked.
 
 | Check | Result |
@@ -41,8 +41,8 @@ Browser consent was not walked.
 | `POST /oauth/register` | **201** with a `client_id`, `token_endpoint_auth_method: none` |
 | `GET /oauth/authorize` with no parameters | **400** `unsupported_response_type`, not 404 |
 | Transport | Streamable HTTP, stateless, JSON responses (no SSE) |
-| Tools | 10 (as generated into this repository). `generate_media` is not on MCP — the claude.ai connectors directory requires the attestation that the server does not use AI models to generate images, video, or audio; image generation stays on the dashboard only. |
-| `POST /api/mcp` tools/list with a valid API key | **200** — 10 tools (`add_media_from_url` … `wait_for_upload`, no `generate_media`) on the review account after deploy `ef83935` |
+| Tools | 24 (as generated into this repository). `generate_media` is not on MCP — the claude.ai connectors directory requires the attestation that the server does not use AI models to generate images, video, or audio; image generation stays on the dashboard only. |
+| `POST /api/mcp` tools/list with a valid API key | **200** — 24 tools (`whoami` … `update_brand_voice`, no `generate_media`) after deploy `0c66f41` |
 | Browser consent → token → initialize | **not verified live** — needs the claude.ai popup |
 
 ### Fix note — consent was access_denied after the trial started (2026-09-19)
