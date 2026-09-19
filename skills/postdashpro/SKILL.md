@@ -72,17 +72,14 @@ and where they can see it — not that it went out.
 
 ## When you are refused
 
-Read the error, and treat these three as decisions rather than failures:
+Read the error, and treat these as decisions rather than failures:
 
-- **`agent_client_not_on_plan`** — this plan does not run Autopilot from the
-  client you are. Creator and Growth plans drive it from Claude and ChatGPT;
-  Claude Code, Cursor, Codex and other clients are on the Agency plan. Tell
-  them which client reported in and what it costs to add it. Retrying under a
-  different name is lying about who you are.
-- **A payment refusal (402)** — the subscription lapsed or is past due. No
-  tool here fixes it; a person does, in PostDashPro under Plan.
-- **A plan limit** — connected accounts, brand slots or the monthly X post
-  count. Waiting does not cure it. Say which limit was hit.
+- **This client is not enabled for this account** — a person enables it in
+  PostDashPro. Retrying under a different name is lying about who you are.
+- **A 402** — this account cannot use the scheduler until a person restores
+  access in PostDashPro. No tool here fixes it.
+- **A limit** — connected accounts, brand slots or the monthly X post count.
+  Waiting does not cure it. Say what the message names.
 
 A platform that cannot take the post says so at scheduling time, not at
 publish time. Fix what the message names and schedule again.
@@ -92,7 +89,7 @@ publish time. Fix what the message names and schedule again.
 - Publish immediately, or bypass the draft-and-review step.
 - Connect or disconnect a social account.
 - Send someone else's file to PostDashPro.
-- Raise a plan limit, or change which clients the plan allows.
+- Raise a limit, or change which clients the account allows.
 
 ## Tools
 

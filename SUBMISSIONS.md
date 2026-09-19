@@ -24,6 +24,11 @@ this file, `README.md`, `LICENSE`, `assets/`.
 
 ## Live check — the server
 
+Re-ran the unauthenticated probe on 2026-09-19 after product deploy `1065ee5`
+(Coolify `yhxkt8ygaihhherksl40vy34` finished, container `zy38e8d-002450185937`).
+The running bundle contains the commerce-free refusal sentences. The 2026-09-18
+OAuth discovery table below is unchanged.
+
 Re-ran against production on 2026-09-18 after deploy `b73de24`
 (`zy38e8d-231053206511`, Coolify `dwhbh0kea9bftt1e3md85bsd` finished).
 
@@ -92,18 +97,19 @@ What ships:
 **Steps 5 and 6 below are unblocked by this.** Step 6 still needs the ChatGPT
 domain-verification challenge route, which is a separate code change.
 
-## The plan gate — say this in every review note
+## Access refusals — say this in every review note
 
-Every plan may drive the server from any MCP client. What a plan limits is how
-many agents can be connected at once — one connection per API key, and an OAuth
-sign-in mints one the same way.
+Every account that can use PostDashPro may drive the server from any MCP
+client. What is limited is how many agents can be connected at once — one
+connection per API key, and an OAuth sign-in mints one the same way.
 
-A reviewer who hits the ceiling gets a 402 naming the limit, both at the OAuth
-consent step and on a tool call. That reads as a broken server if they were not
-told. **Give every reviewer a test account on the top plan with no connections
-already in use**, and say in the notes that a 402 is a plan message, not a
-fault. A lapsed or past-due account is also refused with 402, so the demo
-account must be in good standing for the whole review window.
+A reviewer who hits that ceiling, or whose account cannot use the scheduler,
+gets a refusal that tells them a person enables or restores access in
+PostDashPro. It does not name a tier, a price or a checkout. That still reads
+as a broken server if they were not told. **Give every reviewer a test account
+that already has access, with no agent connections already in use.** A lapsed
+or past-due account is refused with HTTP 402, so the demo account must be in
+good standing for the whole review window.
 
 ## 1. Push this repository
 
@@ -206,6 +212,22 @@ Packet to have ready:
 - Policy note for the review: PostDashPro schedules posts to accounts the user
   connected themselves. It has no follower scraping, no bulk DM and no
   unsolicited-contact tooling, and the tools never mention plans or credits.
+
+### ChatGPT review — test cases
+
+Use these:
+
+- List connections
+- Schedule a draft
+- Generate an image with the user's own key
+- Queue a future post in the account timezone
+
+Do not ask the reviewer to:
+
+- Upgrade to Agency
+- Post DMs
+- Scrape followers
+- Subscribe to post to X
 
 ## Not doing
 
