@@ -1,6 +1,6 @@
 ---
 name: postdashpro
-description: Schedule social posts through PostDashPro to 12 networks — find or attach the image, write the caption per platform, and queue it in the user's own timezone for them to review. Use when asked to plan, draft or schedule social posts, when a post needs a picture, or when asked what is already queued.
+description: PostDashPro is social post scheduling for AI agents. Find or attach the image, write the caption per network, preflight character limits, and queue the post in the user's timezone for them to review. Use when asked to plan, draft or schedule social posts, when a post needs a picture, or when asked what is already queued or published.
 ---
 
 # Scheduling social posts as an agent
@@ -8,6 +8,11 @@ description: Schedule social posts through PostDashPro to 12 networks — find o
 You are queueing posts that will go out under someone else's name, to their
 real audience. Two rules cover most of it: **nothing you schedule publishes
 instantly**, and **the clock you are reading is not theirs**.
+
+Call `whoami` first. Reputation-affecting writes (`schedule_post`,
+`update_scheduled_post`, `update_brand_voice`) are two-step: the first call
+returns a preview and a `confirmToken`; the second call with that token
+performs the write. Destructive tools require `confirm: true`.
 
 ## Before the first post: what is connected?
 
@@ -58,6 +63,10 @@ of trying.
 Pass the ids you get back to `schedule_post` as `mediaIds`, up to 10, in
 order.
 
+Call `preflight_post` before scheduling to check per-network character
+limits and media rules. Then `schedule_post` once for the preview, show it,
+and call again with `confirmToken`.
+
 ## Nothing publishes instantly
 
 A future `scheduledAt` queues the post as *scheduled*. Anything else lands as
@@ -66,6 +75,10 @@ is deliberate: the review step is the product.
 
 So when someone says "post this", the honest answer is that you have queued it
 and where they can see it — not that it went out.
+
+`list_scheduled_posts` and `list_calendar` answer what is queued.
+`list_published_posts` answers what already went out, per network.
+`cancel_scheduled_post` holds a queued item as a draft.
 
 ## When you are refused
 
@@ -93,14 +106,28 @@ publish time. Fix what the message names and schedule again.
 | Tool | What it does |
 |---|---|
 | `add_media_from_url` | Import media from a URL |
+| `cancel_scheduled_post` | Cancel scheduled post |
 | `create_idea` | Create idea |
 | `create_upload_link` | Create an upload link |
+| `delete_idea` | Delete idea |
+| `delete_media` | Delete media |
+| `get_account_settings` | Get account settings |
 | `get_brand_voice` | Get brand voice |
 | `get_current_time` | Get current time |
+| `get_post` | Get post |
+| `get_post_analytics` | Get post analytics |
+| `list_calendar` | Calendar view |
 | `list_connections` | List connected accounts |
 | `list_ideas` | List ideas |
 | `list_media` | List media library |
+| `list_published_posts` | List published posts |
+| `list_scheduled_posts` | List scheduled posts |
+| `preflight_post` | Preflight a draft |
 | `schedule_post` | Schedule post |
+| `update_brand_voice` | Update brand voice |
+| `update_idea` | Update idea |
+| `update_scheduled_post` | Update scheduled post |
 | `wait_for_upload` | Wait for the user's upload |
+| `whoami` | Who am I |
 
-Written from the live server. 10 tools.
+Written from the live server. 24 tools.

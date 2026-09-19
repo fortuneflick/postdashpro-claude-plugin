@@ -209,9 +209,10 @@ Packet to have ready:
 |---|---|
 | Name | PostDashPro |
 | Slug | `postdashpro` |
-| Tagline (≤55 chars) | `Schedule posts to 12 networks from your agent` (45) |
-| Description | The README's opening two paragraphs |
-| Categories | Productivity, Marketing |
+| Tagline (≤55 chars) | `Social post scheduling for AI agents` (36) |
+| Description | The `PLUGIN_DESCRIPTION` in the product `artifacts/api-server/src/lib/pluginRepo.ts` (README lede, every manifest, `server.json`) |
+| Categories (Claude directory) | Productivity, Sales And Marketing, Developer Tools |
+| Categories (Cursor marketplace) | Productivity, All Automations, Canvas |
 | MCP server URL | `https://postdashpro.com/api/mcp` |
 | Auth | OAuth 2.1 — authorization code + PKCE, dynamic client registration. Add by URL; the directory discovers the rest. |
 | Docs URL | `https://postdashpro.com/guide` |

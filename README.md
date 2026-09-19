@@ -2,11 +2,7 @@
 
 # PostDashPro for AI agents
 
-**Social scheduling built for agents that post on someone else's behalf.** Your
-agent picks the image, writes the caption, and queues the post to any of 12
-networks in the account's own timezone. Nothing publishes instantly: a future
-time queues the post as scheduled, anything else lands as a draft, and a
-person reviews it either way.
+PostDashPro is social post scheduling for AI agents: queue posts to 12 networks (X, LinkedIn, Instagram, Facebook, TikTok, YouTube, Threads, Pinterest, Bluesky, Telegram, Discord and Mastodon) from the account the person already connected. The hosted MCP server at https://postdashpro.com/api/mcp exposes 24 tools. A future time queues the post as scheduled; anything else lands as a draft. Nothing publishes instantly; a person reviews every item. There is no tool for unsolicited DMs or follower scraping. Auth is OAuth 2.1 with dynamic client registration, or a paste API key. Starter prompts: "What accounts do I have connected?" "Draft three posts for this week and schedule them for 9am." "What is queued for tomorrow?"
 
 This repository ships the skill (`SKILL.md`) and the plugin manifests for
 Claude Code, Cursor and Grok Build. The MCP server itself is hosted at

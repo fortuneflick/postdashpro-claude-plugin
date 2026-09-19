@@ -1,7 +1,7 @@
 {
   "name": "postdashpro",
-  "version": "1.2.0",
-  "description": "Schedule social posts to 12 networks from an agent: attach a photo or video, queue each post in the user's own timezone, and leave every one for a person to review before it publishes.",
+  "version": "1.3.0",
+  "description": "PostDashPro is social post scheduling for AI agents: queue posts to 12 networks (X, LinkedIn, Instagram, Facebook, TikTok, YouTube, Threads, Pinterest, Bluesky, Telegram, Discord and Mastodon) from the account the person already connected. The hosted MCP server at https://postdashpro.com/api/mcp exposes 24 tools. A future time queues the post as scheduled; anything else lands as a draft. Nothing publishes instantly; a person reviews every item. There is no tool for unsolicited DMs or follower scraping. Auth is OAuth 2.1 with dynamic client registration, or a paste API key. Starter prompts: \"What accounts do I have connected?\" \"Draft three posts for this week and schedule them for 9am.\" \"What is queued for tomorrow?\"",
   "author": {
     "name": "PostDashPro",
     "email": "hello@postdashpro.com",
@@ -11,12 +11,16 @@
   "repository": "https://github.com/fortuneflick/postdashpro-claude-plugin",
   "license": "MIT",
   "keywords": [
-    "postdashpro",
-    "postdashpro mcp",
-    "postdashpro social scheduler",
-    "postdashpro ai agent",
-    "postdashpro autopilot",
-    "postdashpro post scheduling"
+    "MCP server",
+    "MCP connector",
+    "social post scheduling",
+    "social scheduler",
+    "AI agents",
+    "Claude",
+    "Cursor",
+    "Instagram",
+    "LinkedIn",
+    "draft posts"
   ],
   "skills": [
     "./skills/postdashpro"
