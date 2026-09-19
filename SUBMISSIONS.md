@@ -24,12 +24,12 @@ this file, `README.md`, `LICENSE`, `assets/`.
 
 ## Live check — the server
 
-Re-ran on 2026-09-19 after product deploy `68b1982` (Coolify
-`adhsgu95hclvctlj5860z9pw` finished, container `zy38e8d-005446118888`, image
-`zy38e8d:68b1982b89e89ac066840481403ceff923b93d18`). DCR returned 201. A
-Settings-style API key minted for the review account (`numan@roasbeast.com`)
-got `initialize` 200 and `tools/list` 200 with 11 tools. Browser consent was
-not walked.
+Re-ran on 2026-09-19 after product deploy `ef83935` (Coolify
+`elo5aim6o410gf7bvla7erbi` finished, container `zy38e8d-010640571124`, image
+`zy38e8d:ef83935362594b229ee8f95885e9fcc1bd905e76`). A Settings-style API key
+minted on the review-account row `MCP: Claude (review)` (`numan@roasbeast.com`)
+got `initialize` 200 and `tools/list` 200 with 10 tools and no `generate_media`.
+Browser consent was not walked.
 
 | Check | Result |
 |---|---|
@@ -41,8 +41,8 @@ not walked.
 | `POST /oauth/register` | **201** with a `client_id`, `token_endpoint_auth_method: none` |
 | `GET /oauth/authorize` with no parameters | **400** `unsupported_response_type`, not 404 |
 | Transport | Streamable HTTP, stateless, JSON responses (no SSE) |
-| Tools | 11 (as generated into this repository) |
-| `POST /api/mcp` tools/list with a valid API key | **200** — 11 tools (`create_idea` … `get_brand_voice`) on the review account after deploy `68b1982` |
+| Tools | 10 (as generated into this repository). `generate_media` is not on MCP — the claude.ai connectors directory requires the attestation that the server does not use AI models to generate images, video, or audio; image generation stays on the dashboard only. |
+| `POST /api/mcp` tools/list with a valid API key | **200** — 10 tools (`add_media_from_url` … `wait_for_upload`, no `generate_media`) on the review account after deploy `ef83935` |
 | Browser consent → token → initialize | **not verified live** — needs the claude.ai popup |
 
 ### Fix note — consent was access_denied after the trial started (2026-09-19)
@@ -219,7 +219,7 @@ Packet to have ready:
 | Terms URL | `https://postdashpro.com/terms-of-service` |
 | Support | `hello@postdashpro.com` |
 | Icon | `assets/icon-192.png` |
-| Example prompts | "What accounts do I have connected?" · "Draft three posts for this week and schedule them for 9am" · "Make an image for this post and attach it" · "What is queued for tomorrow?" · "Write this in my brand voice and put it in drafts" |
+| Example prompts | "What accounts do I have connected?" · "Draft three posts for this week and schedule them for 9am" · "Attach this image from a URL" · "What is queued for tomorrow?" · "Write this in my brand voice and put it in drafts" |
 | Test account | A top-plan workspace with spare connection headroom, several networks connected, a set timezone, a few items in the media library, and no MFA |
 
 ## 6. ChatGPT apps (last) — needs the domain-verification route
@@ -246,7 +246,7 @@ Use these:
 
 - List connections
 - Schedule a draft
-- Generate an image with the user's own key
+- Add media from a URL
 - Queue a future post in the account timezone
 
 Do not ask the reviewer to:

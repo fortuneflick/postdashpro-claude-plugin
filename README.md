@@ -3,10 +3,10 @@
 # PostDashPro for AI agents
 
 **Social scheduling built for agents that post on someone else's behalf.** Your
-agent picks or generates the image, writes the caption, and queues the post to
-any of 12 networks in the account's own timezone. Nothing publishes instantly:
-a future time queues the post as scheduled, anything else lands as a draft, and
-a person reviews it either way.
+agent picks the image, writes the caption, and queues the post to any of 12
+networks in the account's own timezone. Nothing publishes instantly: a future
+time queues the post as scheduled, anything else lands as a draft, and a
+person reviews it either way.
 
 This repository ships the skill (`SKILL.md`) and the plugin manifests for
 Claude Code, Cursor and Grok Build. The MCP server itself is hosted at
@@ -151,9 +151,8 @@ npx skills add fortuneflick/postdashpro-claude-plugin
 - List the connected accounts and which one is active on each network.
 - Schedule a post to one network, several, or every connected one, with up to
   10 photos or videos attached.
-- Find an existing image in the library, generate one with the account's own
-  connected AI, import one from a public URL, or hand the user a short-lived
-  upload link and wait for the file to land.
+- Find an existing image in the library, import one from a public URL, or
+  hand the user a short-lived upload link and wait for the file to land.
 - Read the current time in the account's own timezone before scheduling
   anything relative.
 - Read the saved Brand Voice profile, and add or list Idea Board cards.
@@ -164,7 +163,7 @@ npx skills add fortuneflick/postdashpro-claude-plugin
   else is a draft. The review step is not optional and no tool skips it.
 - **It cannot connect or disconnect a social account.** That is a person's job.
 - **It cannot send a file it was given in chat.** An attached image is pixels,
-  not bytes. It generates one or asks for a URL.
+  not bytes. It asks for a URL.
 - **It cannot raise a plan limit** or change which clients the plan allows.
 
 ## Security
