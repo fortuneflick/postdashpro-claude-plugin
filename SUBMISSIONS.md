@@ -24,13 +24,12 @@ this file, `README.md`, `LICENSE`, `assets/`.
 
 ## Live check — the server
 
-Re-ran the unauthenticated probe on 2026-09-19 after product deploy `1065ee5`
-(Coolify `yhxkt8ygaihhherksl40vy34` finished, container `zy38e8d-002450185937`).
-The running bundle contains the commerce-free refusal sentences. The 2026-09-18
-OAuth discovery table below is unchanged.
-
-Re-ran against production on 2026-09-18 after deploy `b73de24`
-(`zy38e8d-231053206511`, Coolify `dwhbh0kea9bftt1e3md85bsd` finished).
+Re-ran on 2026-09-19 after product deploy `68b1982` (Coolify
+`adhsgu95hclvctlj5860z9pw` finished, container `zy38e8d-005446118888`, image
+`zy38e8d:68b1982b89e89ac066840481403ceff923b93d18`). DCR returned 201. A
+Settings-style API key minted for the review account (`numan@roasbeast.com`)
+got `initialize` 200 and `tools/list` 200 with 11 tools. Browser consent was
+not walked.
 
 | Check | Result |
 |---|---|
@@ -43,8 +42,36 @@ Re-ran against production on 2026-09-18 after deploy `b73de24`
 | `GET /oauth/authorize` with no parameters | **400** `unsupported_response_type`, not 404 |
 | Transport | Streamable HTTP, stateless, JSON responses (no SSE) |
 | Tools | 11 (as generated into this repository) |
-| `POST /api/mcp` tools/list with a valid API key | **not verified live** — plaintext keys are not stored |
+| `POST /api/mcp` tools/list with a valid API key | **200** — 11 tools (`create_idea` … `get_brand_voice`) on the review account after deploy `68b1982` |
 | Browser consent → token → initialize | **not verified live** — needs the claude.ai popup |
+
+### Fix note — consent was access_denied after the trial started (2026-09-19)
+
+Claude's directory completed OAuth consent for `numan@roasbeast.com`
+(`b38973e6-96bc-44db-9bef-ab37c8546b00`) and then reported "Authorization with
+the MCP server failed" twice (`ofid_662fa3bc87b837a0`, `ofid_c8e3e0d7c6190ff9`,
+~00:40–00:50 UTC). Production logs on `zy38e8d-002450185937` (image `1065ee5`,
+which already contained `b73de24`):
+
+- `[trial] free trial started` at `2026-10-03T00:41:03.877Z` for that user
+- the same request then logged `mcp_oauth_connection_refused` and 302'd
+
+The trial door worked. The refusal was the Creator agent-connection cap (1).
+Yesterday's Approve had minted `api_keys` `75d83173` (`MCP: Claude (1e8_DG)`);
+Claude runs DCR on every attempt, so today's Approve tried to mint a second
+key and `checkAutopilotLimit` redirected `access_denied`.
+
+Fix in the product repo (`68b1982`): re-approving the same client family
+reuses that leftover key; a full slot that is not this client is named on the
+consent page before anything is minted. `oauth_09` reproduces the leftover-key
+state and walks consent → token → initialize.
+
+Production DB after live verify (review account):
+
+- `users.trial_ends_at` left at `2026-10-03 00:41:03.877+00` (set by the live
+  consent path; not rewritten)
+- deleted leftover `api_keys` `75d83173`; inserted `e3e37665`
+  `MCP: Claude (review)` so the next directory Approve reuses that family
 
 ### Fix note — Claude's issued token was 402ed (2026-09-18)
 
