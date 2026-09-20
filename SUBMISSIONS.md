@@ -24,12 +24,18 @@ this file, `README.md`, `LICENSE`, `assets/`.
 
 ## Live check — the server
 
-Re-ran on 2026-09-19 after product deploy `0c66f41` (Coolify
-`frvv2otoherb9rnl5n79bi3a` finished, container `zy38e8d-064835322135`, image
-`zy38e8d:0c66f411b83498c1b7ac98cfa43364d8c1ba52e5`). Authenticated
-`initialize` 200 (`serverInfo.title` PostDashPro, version `1.3.0`, instructions
-present) and `tools/list` 200 with **24 tools** and no `generate_media`.
-Browser consent was not walked.
+Re-ran on 2026-09-20 after product deploy `18941b7` (Coolify
+`x599wgbmdbi79xpudarrjmkv` finished, container `zy38e8d-092430887456`, image
+`zy38e8d:18941b7e7f6422b70a18c63ec0d5f5e6bb587a49`). Token-gated
+`GET /review-login` is live: wrong token HTTP 404 empty + `X-Robots-Tag:
+noindex`; matching token HTTP 302 `/compose` + `postdash_session`;
+`GET /api/auth/me` is `reviewer@postdashpro.com` / **PostDashPro Review
+Sandbox**. Authenticated `initialize` 200 (`serverInfo.title` PostDashPro,
+version `1.3.0`) and `tools/list` 200 with **24 tools** and no `generate_media`
+using the seeded Review key. Browser consent was not walked.
+
+Earlier check on 2026-09-19 after `0c66f41` (Coolify `frvv2otoherb9rnl5n79bi3a`,
+container `zy38e8d-064835322135`) also listed 24 tools.
 
 | Check | Result |
 |---|---|
@@ -221,7 +227,7 @@ Packet to have ready:
 | Support | `hello@postdashpro.com` |
 | Icon | `assets/icon-192.png` |
 | Example prompts | "What accounts do I have connected?" · "Draft three posts for this week and schedule them for 9am" · "Attach this image from a URL" · "What is queued for tomorrow?" · "Write this in my brand voice and put it in drafts" |
-| Test account | A top-plan workspace with spare connection headroom, several networks connected, a set timezone, a few items in the media library, and no MFA |
+| Test account | Review URL (no password, no MFA, no Google): `https://postdashpro.com/review-login?token=` + the value in `/root/postdashpro-review-login.token` on the Coolify host. Lands in **PostDashPro Review Sandbox** as `reviewer@postdashpro.com`. PostDashPro has no MFA surface. `list_connections` may be empty — no real social accounts are attached. |
 
 ## 6. ChatGPT apps (last) — needs the domain-verification route
 
@@ -235,6 +241,14 @@ Packet to have ready:
 - **Owner steps before submitting:** the challenge route, which does not exist
   yet — a code change in the product repository, not a DNS record. OAuth itself
   is done.
+- **Demo account:** `https://postdashpro.com/review-login?token=` + the value
+  in `/root/postdashpro-review-login.token` on the Coolify host. No password,
+  no Google, no MFA. The seeded account is **PostDashPro Review Sandbox**
+  (`reviewer@postdashpro.com`): Agency plan, card-free trial, timezone
+  America/New_York, Brand Voice, Idea Board cards, Studio items, two scheduled
+  posts, API key named Review. `list_connections` may be empty — no real social
+  accounts are attached; say so rather than asking the reviewer to connect
+  Instagram. Unset `REVIEW_LOGIN_TOKEN` on the Coolify app to revoke the URL.
 - Tool descriptions are kept under 1024 characters because the Chat Completions
   tool schema rejects longer ones and drops the whole server. Keep it that way.
 - Policy note for the review: PostDashPro schedules posts to accounts the user
