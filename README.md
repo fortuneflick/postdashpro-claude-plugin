@@ -1,4 +1,4 @@
-<p align="center"><img src="assets/logo.png" alt="PostDashPro" width="88"></p>
+![PostDashPro](assets/icon-192.png)
 
 # PostDashPro for AI agents
 
@@ -171,8 +171,8 @@ npx skills add fortuneflick/postdashpro-claude-plugin
   connect command above names that address; the tools run there.
 - **Credentials:** either an OAuth sign-in or a bearer API key created under
   Settings, API & Webhooks. This repository contains no keys and never asks for
-  one in chat. The Claude Code manifest reads `POSTDASHPRO_API_KEY` from your
-  environment rather than writing it to a config file.
+  one in chat. The Claude plugin's server entry carries no key: Claude Code,
+  claude.ai and Cowork sign you in through OAuth the first time a tool runs.
 - **OAuth:** authorization code with PKCE. The consent screen lists what the
   agent will be able to do before you approve it. Access tokens last a day and
   refresh tokens rotate each time they are used, so a copied one stops working.

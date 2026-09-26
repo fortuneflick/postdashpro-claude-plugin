@@ -188,8 +188,8 @@ offered there is to move the repository to a `postdashpro` org and re-pin.
 - Homepage: `https://postdashpro.com/guide`
 - Description: use the `description` in `.claude-plugin/plugin.json` verbatim.
 - Note for the reviewer: the plugin ships the skill and a `.mcp.json` that
-  reads `POSTDASHPRO_API_KEY` from the environment. No credential is written to
-  a config file and none is in this repository. See the plan gate above — the test
+  names the hosted server with no key; the person signs in through OAuth. No
+  credential is in this repository. See the plan gate above — the test
   account needs spare connection headroom.
 - Pushes to this repository are picked up automatically. **Never open a second
   submission.**
@@ -201,7 +201,7 @@ offered there is to move the repository to a `postdashpro` org and re-pin.
 - Repository URL `https://github.com/fortuneflick/postdashpro-claude-plugin`,
   manifest `.cursor-plugin/plugin.json`, marketplace file
   `.cursor-plugin/marketplace.json`, logo
-  `https://raw.githubusercontent.com/fortuneflick/postdashpro-claude-plugin/main/assets/logo.png`,
+  https://raw.githubusercontent.com/fortuneflick/postdashpro-claude-plugin/main/assets/logo.png,
   org name `PostDashPro`, handle `postdashpro`, contact `hello@postdashpro.com`,
   website `https://postdashpro.com`.
 - The Cursor plugin is skill-only; the one-click server install is the deeplink
@@ -225,7 +225,7 @@ Packet to have ready:
 | Privacy URL | `https://postdashpro.com/privacy-policy` |
 | Terms URL | `https://postdashpro.com/terms-of-service` |
 | Support | `hello@postdashpro.com` |
-| Icon | `assets/icon-192.png` |
+| Icon | assets/icon-192.png (192 px PNG) |
 | Example prompts | "What accounts do I have connected?" · "Draft three posts for this week and schedule them for 9am" · "Attach this image from a URL" · "What is queued for tomorrow?" · "Write this in my brand voice and put it in drafts" |
 | Test account | Review URL (no password, no MFA, no Google): `https://postdashpro.com/review-login?token=` + the value in `/root/postdashpro-review-login.token` on the Coolify host. Lands in **PostDashPro Review Sandbox** as `reviewer@postdashpro.com`. PostDashPro has no MFA surface. `list_connections` shows a demo LinkedIn page and a demo X account. Nothing is really posted — the publisher skips those rows and marks the result `published (demo)`. |
 
