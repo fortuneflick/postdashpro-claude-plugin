@@ -12,6 +12,9 @@
   "repository": "https://github.com/fortuneflick/postdashpro-claude-plugin",
   "license": "MIT",
   "privacyPolicyUrl": "https://postdashpro.com/privacy",
+  "termsOfServiceUrl": "https://postdashpro.com/terms",
+  "supportUrl": "https://postdashpro.com/support",
+  "documentationUrl": "https://postdashpro.com/guide",
   "keywords": [
     "MCP server",
     "MCP connector",
